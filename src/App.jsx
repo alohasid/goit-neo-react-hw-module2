@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import Feedback from './components/Feedback/Feedback';
 import Options from './components/Options/Options';
+import Description from './components/Description/Description';
+import Notification from './components/Notification/Notification';
 
 export default function App() {
     const [feedback, setFeedback] = useState(() => {
@@ -10,11 +12,7 @@ export default function App() {
 
     const handleFeedback = (type) => {
         if (type === 'reset') {
-            setFeedback({
-                good: 0,
-                neutral: 0,
-                bad: 0,
-            });
+            setFeedback({ good: 0, neutral: 0, bad: 0 });
         } else {
             setFeedback((prevFeedback) => ({
                 ...prevFeedback,
@@ -24,22 +22,22 @@ export default function App() {
     };
 
     useEffect(() => {
-        const savedFeedback = localStorage.getItem('feedback');
-        if (savedFeedback) {
-            setFeedback(JSON.parse(savedFeedback));
-        }
-    }, []);
-
-    useEffect(() => {
         localStorage.setItem('feedback', JSON.stringify(feedback));
     }, [feedback]);
+
+    const total = feedback.good + feedback.neutral + feedback.bad;
+    const positivePercentage = total > 0 ? ((feedback.good / total) * 100).toFixed(0) : 0;
 
     return (
         <div>
             <h1>Sip Happens Café</h1>
-            <p>Please leave your feedback about our service by selecting one of the options below.</p>
-            <Options onFeedback={handleFeedback} />
-            {feedback.good + feedback.neutral + feedback.bad > 0 ? (<Feedback feedback={feedback} />) : ''}
+            <Description />
+            <Options onFeedback={handleFeedback} feedbackCount={total} />
+            {total > 0 ? (
+                <Feedback feedback={feedback} total={total} positivePercentage={positivePercentage} />
+            ) : (
+                <Notification message="No feedback given yet." />
+            )}
         </div>
     );
 }

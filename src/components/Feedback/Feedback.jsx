@@ -1,11 +1,11 @@
-export default function Feedback({ feedback }) {
+export default function Feedback({ feedback, total, positivePercentage }) {
     return (
         <div>
             <p>Good: {feedback.good}</p>
             <p>Neutral: {feedback.neutral}</p>
             <p>Bad: {feedback.bad}</p>
-            <p>Total: {feedback.good + feedback.neutral + feedback.bad}</p>
-            <p>Positive: {feedback.good > 0 ? ((feedback.good / (feedback.good + feedback.neutral + feedback.bad)) * 100).toFixed(0) : 0}%</p>
+            <p>Total: {total}</p>
+            <p>Positive: {positivePercentage}%</p>
         </div>
     );
 }

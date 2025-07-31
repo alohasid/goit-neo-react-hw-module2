@@ -34,7 +34,11 @@ export default function App() {
             <Description />
             <Options onFeedback={handleFeedback} feedbackCount={total} />
             {total > 0 ? (
-                <Feedback feedback={feedback} total={total} positivePercentage={positivePercentage} />
+                <Feedback
+                    feedback={feedback}
+                    total={total}
+                    positivePercentage={positivePercentage}
+                />
             ) : (
                 <Notification message="No feedback given yet." />
             )}
